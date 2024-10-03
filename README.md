@@ -5,7 +5,19 @@
 
 <p>
    <a href="https://github.com/jiyunio">
-      <img src="https://avatars.githubusercontent.com/u/146628970?s=400&u=5a13e0eb90b8b6441fe1d00241d76a1a2c1f4007&v=4" width="100">
+      <img src="https://avatars.githubusercontent.com/u/146628970?v=4" width="100">
+    </a>
+</p>
+
+## 🙋 파트원
+
+<p>
+   <a href="https://github.com/Teach-D">
+      <img src="https://avatars.githubusercontent.com/u/110902175?v=4" width="100">
+    </a>
+
+   <a href="https://github.com/xunxxoie">
+      <img src="https://avatars.githubusercontent.com/u/146558936?v=4" width="100">
     </a>
 </p>
 
