@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
-@Getter @Setter
+@Getter
 @Table(name = "user")
 public class UserEntity extends BaseEntity {
     @Id

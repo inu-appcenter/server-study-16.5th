@@ -10,10 +10,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "todo")
 public class TodoEntity extends BaseEntity {
 
@@ -35,6 +32,13 @@ public class TodoEntity extends BaseEntity {
 
     @Column(nullable = false)
     private Boolean completed = false;
+    @Builder
+    public TodoEntity(String title, String description, LocalDateTime dueDate, Integer priority) {
+        this.title = title;
+        this.description = description;
+        this.dueDate = dueDate;
+        this.priority = priority;
+    }
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
