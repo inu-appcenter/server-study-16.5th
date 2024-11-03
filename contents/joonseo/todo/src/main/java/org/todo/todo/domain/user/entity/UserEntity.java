@@ -1,5 +1,6 @@
 package org.todo.todo.domain.user.entity;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -26,6 +27,13 @@ public class UserEntity extends BaseEntity {
 
     @Column(nullable = false)
     private String username;
+
+    @Builder
+    public UserEntity(String email, String password, String username){
+        this.email = email;
+        this.password = password;
+        this.username = username;
+    }
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<TodoEntity> todos;

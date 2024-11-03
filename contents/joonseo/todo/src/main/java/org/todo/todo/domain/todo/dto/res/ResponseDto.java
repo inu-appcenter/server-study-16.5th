@@ -20,5 +20,4 @@ public class ResponseDto<T> {
                 .message(message)
                 .build();
     }
-
 }

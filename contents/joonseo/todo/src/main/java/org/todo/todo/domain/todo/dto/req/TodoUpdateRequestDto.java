@@ -32,5 +32,4 @@ public class TodoUpdateRequestDto {
     @Min(value = 0, message = "최소 = 0(매우매우 중요)")
     @Max(value = 4, message = "최대 = 4(매우매우 안중요)")
     private Integer priority;
-
 }
