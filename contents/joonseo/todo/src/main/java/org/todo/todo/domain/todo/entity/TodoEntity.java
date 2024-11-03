@@ -32,15 +32,32 @@ public class TodoEntity extends BaseEntity {
 
     @Column(nullable = false)
     private Boolean completed = false;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    private UserEntity user;
+
     @Builder
-    public TodoEntity(String title, String description, LocalDateTime dueDate, Integer priority) {
+    public TodoEntity(String title, String description, LocalDateTime dueDate, Integer priority, UserEntity user) {
+        this.title = title;
+        this.description = description;
+        this.dueDate = dueDate;
+        this.priority = priority;
+        this.user = user;
+    }
+    // Q. 외래키 유저 아이디를 빌더 패턴에 포함시키는게 적절한가?
+
+    public void updateTodo(String title, String description, LocalDateTime dueDate, Integer priority){
         this.title = title;
         this.description = description;
         this.dueDate = dueDate;
         this.priority = priority;
     }
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
-    private UserEntity user;
+    public void updateCompleted(){
+        if(completed)
+            this.completed = false;
+
+        this.completed = true;
+    }
 }
