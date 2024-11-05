@@ -3,6 +3,7 @@ package com.appcenter.todo_list.dto.request;
 import com.appcenter.todo_list.entity.*;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,7 +20,7 @@ public class TaskRequestDto {
 
     private String description;
 
-    @NotBlank
+    @NotNull
     private LocalDateTime dueDate;
 
     @NotBlank
