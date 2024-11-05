@@ -59,16 +59,7 @@ public class TaskService {
         Category category = categoryRepository.findById(taskRequestDto.getCategoryId()).orElseThrow();
         User user = userRepository.findById(userId).orElseThrow();
 
-        Task task = Task.builder()
-                .user(user)
-                .category(category)
-                .title(taskRequestDto.getTitle())
-                .description(taskRequestDto.getDescription())
-                .status(taskRequestDto.getStatus())
-                .priority(taskRequestDto.getPriority())
-                .dueDate(taskRequestDto.getDueDate())
-                .createdAt(LocalDateTime.now())
-                .build();
+        Task task = TaskRequestDto.dtoToEntity(taskRequestDto, category, user);
 
         Task savedTask = taskRepository.save(task);
 

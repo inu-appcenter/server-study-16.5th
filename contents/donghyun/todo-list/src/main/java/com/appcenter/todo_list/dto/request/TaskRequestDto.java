@@ -1,7 +1,6 @@
 package com.appcenter.todo_list.dto.request;
 
-import com.appcenter.todo_list.entity.Priority;
-import com.appcenter.todo_list.entity.Status;
+import com.appcenter.todo_list.entity.*;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AccessLevel;
@@ -32,4 +31,18 @@ public class TaskRequestDto {
     @Schema(description = "상태 >> PENDING, PROGRESS, COMPLETED")
     @NotBlank
     private Status status;
+
+    public static Task dtoToEntity(TaskRequestDto requestDto, Category category, User user) {
+        return Task.builder()
+                .title(requestDto.title)
+                .description(requestDto.description)
+                .dueDate(requestDto.dueDate)
+                .status(requestDto.status)
+                .priority(requestDto.priority)
+                .category(category)
+                .createdAt(LocalDateTime.now())
+                .category(category)
+                .user(user)
+                .build();
+    }
 }

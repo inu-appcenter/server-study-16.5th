@@ -50,15 +50,10 @@ public class UserService {
     }
 
     public UserResponseDto createUser(UserRequestDto userRequestDto) {
-        User user = User.builder()
-                .name(userRequestDto.getName())
-                .email(userRequestDto.getEmail())
-                .password(userRequestDto.getPassword())
-                .createAt(LocalDateTime.now())
-                .build();
+        User user = UserRequestDto.dtoToEntity(userRequestDto);
 
         User savedUser = userRepository.save(user);
-        log.info(savedUser.getId().toString());
+        log.info(savedUser.toString());
         return UserResponseDto.entityToDto(savedUser);
     }
 

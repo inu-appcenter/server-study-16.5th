@@ -37,7 +37,7 @@ public class CategoryService {
 
     public CategoryResponseDto createCategory(CategoryRequestDto categoryRequestDto, Long userId) {
         User user = userRepository.findById(userId).orElseThrow();
-        Category category = new Category(categoryRequestDto, user);
+        Category category = CategoryRequestDto.dtoToEntity(categoryRequestDto, user);
 
         Category savedCategory = categoryRepository.save(category);
 

@@ -1,5 +1,7 @@
 package com.appcenter.todo_list.dto.request;
 
+import com.appcenter.todo_list.entity.Category;
+import com.appcenter.todo_list.entity.User;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AccessLevel;
@@ -14,4 +16,12 @@ public class CategoryRequestDto {
     @NotBlank
     private String name;
     private String description;
+
+    public static Category dtoToEntity(CategoryRequestDto requestDto, User user) {
+        return Category.builder()
+                .name(requestDto.getName())
+                .description(requestDto.getDescription())
+                .user(user)
+                .build();
+    }
 }
