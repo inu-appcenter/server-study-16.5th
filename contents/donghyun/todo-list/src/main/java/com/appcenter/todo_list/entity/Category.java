@@ -27,9 +27,10 @@ public class Category {
     private User user;
 
     @Builder
-    private Category(String name, String description) {
+    private Category(String name, String description, User user) {
         this.name = name;
         this.description = description;
+        this.user = user;
     }
 
     public Category(CategoryRequestDto categoryRequestDto, User user) {
@@ -44,4 +45,6 @@ public class Category {
 
         return this;
     }
+
+
 }

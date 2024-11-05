@@ -9,7 +9,6 @@ import java.util.List;
 
 @Entity
 @Getter
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class User {
@@ -28,6 +27,14 @@ public class User {
     private String name;
 
     private LocalDateTime createAt;
+
+    @Builder
+    public User(String email, String password, String name, LocalDateTime createAt) {
+        this.email = email;
+        this.password = password;
+        this.name = name;
+        this.createAt = createAt;
+    }
 
     @OneToMany(mappedBy = "user", orphanRemoval = true)
     private List<Task> tasks;

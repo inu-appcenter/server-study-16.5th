@@ -8,7 +8,6 @@ import java.time.LocalDateTime;
 
 @Entity
 @Getter
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Task {
@@ -42,6 +41,19 @@ public class Task {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id")
     private Category category;
+
+    @Builder
+    public Task(String title, String description, LocalDateTime dueDate, Status status, Priority priority, LocalDateTime createdAt, LocalDateTime updatedAt, User user, Category category) {
+        this.title = title;
+        this.description = description;
+        this.dueDate = dueDate;
+        this.status = status;
+        this.priority = priority;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+        this.user = user;
+        this.category = category;
+    }
 
     public Task update(TaskRequestDto taskRequestDto, Category category) {
         this.category = category;
