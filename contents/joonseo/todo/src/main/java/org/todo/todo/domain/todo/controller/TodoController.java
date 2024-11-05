@@ -22,6 +22,7 @@ import java.util.List;
 @RequestMapping("/api/todos")
 public class TodoController {
 
+    // TODO dto에서 사용자 아이디 제거하고 RequestParams나 PathVariable로 받는 것으로 수정하기
     private final TodoService todoService;
 
     @Operation(summary = "투두 생성하기")
