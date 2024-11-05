@@ -22,11 +22,9 @@ public class TaskResponseDto {
     private String title;
     private String description;
 
-    @Enumerated(EnumType.STRING)
     @Schema(description = "우선순위 >> TOP, MIDDLE, BOTTOM")
     private Status status;
 
-    @Enumerated(EnumType.STRING)
     @Schema(description = "상태 >> PENDING, PROGRESS, COMPLETED")
     private Priority priority;
 
