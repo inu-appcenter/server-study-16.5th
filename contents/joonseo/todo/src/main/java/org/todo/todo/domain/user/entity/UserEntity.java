@@ -1,8 +1,6 @@
 package org.todo.todo.domain.user.entity;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import jakarta.persistence.*;
 import org.todo.todo.domain.todo.entity.TodoEntity;
@@ -13,6 +11,7 @@ import java.util.List;
 
 @Entity
 @Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "user")
 public class UserEntity extends BaseEntity {
     @Id

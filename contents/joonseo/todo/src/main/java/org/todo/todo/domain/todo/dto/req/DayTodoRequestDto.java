@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 public class DayTodoRequestDto {
 
     @Schema(description = "투두 조회를 요청한 유저 아이디", example = "1")
-    @NotBlank @Email
+    @NotBlank
     private Long userId;
 
     @DateTimeFormat(pattern = "yyyyMMdd")

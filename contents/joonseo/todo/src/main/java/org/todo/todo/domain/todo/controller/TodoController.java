@@ -3,6 +3,7 @@ package org.todo.todo.domain.todo.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -42,7 +43,7 @@ public class TodoController {
             @ApiResponse(responseCode = "401", description = "투두 삭제 실패 : 권한 없음")
     })
     @DeleteMapping
-    public ResponseEntity<ResponseDto<Boolean>> deleteTodo(@Valid@RequestBody TodoDeleteRequestDto request){
+    public ResponseEntity<ResponseDto<Boolean>> deleteTodo(@Valid @RequestBody TodoDeleteRequestDto request){
         Boolean isSucceed = todoService.deleteTodo(request);
         return ResponseEntity.status(HttpStatus.OK).body(ResponseDto.of(isSucceed, request.getTitle()));
     }
@@ -63,7 +64,7 @@ public class TodoController {
             @ApiResponse(responseCode = "200", description = "투두 완료여부 수정 성공"),
             @ApiResponse(responseCode = "401", description = "투두 완료여부 수정 실패 : 권한 없음")
     })
-    @PutMapping("/completed")
+    @PutMapping("/complete")
     public ResponseEntity<ResponseDto<Boolean>> updateCompletedTodo(@Valid@RequestBody TodoCompletedRequestDto request){
         Boolean isSucceed = todoService.updateCompletedTodo(request);
         return ResponseEntity.status(HttpStatus.OK).body(ResponseDto.of(isSucceed, request.getTitle()));
