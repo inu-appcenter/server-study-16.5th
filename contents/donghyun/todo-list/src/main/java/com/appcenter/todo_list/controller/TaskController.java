@@ -1,16 +1,12 @@
 package com.appcenter.todo_list.controller;
 
 import com.appcenter.todo_list.dto.request.TaskRequestDto;
-import com.appcenter.todo_list.dto.response.CategoryResponseDto;
 import com.appcenter.todo_list.dto.response.TaskResponseDto;
 import com.appcenter.todo_list.service.TaskService;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,6 +21,13 @@ import static org.springframework.http.HttpStatus.*;
 public class TaskController {
 
     private final TaskService taskService;
+
+    @Operation(summary = "모든 Task 조회", description = "모든 Task 조회")
+    @ApiResponse(responseCode = "200", description = "모든 Task 조회 성공")
+    @GetMapping()
+    public ResponseEntity<List<TaskResponseDto>> getAllTasks() {
+        return ResponseEntity.status(OK).body(taskService.getAllTasks());
+    }
 
     @Operation(summary = "Task 조회", description = "Task id를 Path로 받아 Task 조회")
     @ApiResponse(responseCode = "200", description = "Task 조회 성공")
@@ -47,16 +50,9 @@ public class TaskController {
         return ResponseEntity.status(OK).body(taskService.getTasksByUserId(id));
     }
 
-    @Operation(summary = "모든 Task 조회", description = "모든 Task 조회")
-    @ApiResponse(responseCode = "200", description = "모든 Task 조회 성공")
-    @GetMapping("/all")
-    public ResponseEntity<List<TaskResponseDto>> getAllTasks() {
-        return ResponseEntity.status(OK).body(taskService.getAllTasks());
-    }
-
     @Operation(summary = "Task 생성", description = "User id를 Path로 받아 Task 생성")
     @ApiResponse(responseCode = "201", description = "Task 생성 성공")
-    @PostMapping("/{userId}")
+    @PostMapping("/users/{userId}")
     public ResponseEntity<TaskResponseDto> createTask(@RequestBody TaskRequestDto taskRequestDto, @PathVariable(name = "userId") Long userId) {
         return ResponseEntity.status(OK).body(taskService.createTask(userId, taskRequestDto));
     }

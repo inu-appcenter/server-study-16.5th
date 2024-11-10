@@ -23,6 +23,13 @@ public class UserController {
 
     private final UserService userService;
 
+    @Operation(summary = "모든 User 조회", description = "모든 User 조회")
+    @ApiResponse(responseCode = "200", description = "모든 User 조회 성공")
+    @GetMapping()
+    public ResponseEntity<List<UserResponseDto>> getAllUsers() {
+        return ResponseEntity.status(OK).body(userService.getAllUsers());
+    }
+
     @Operation(summary = "id로 User 조회", description = "User id를 Path로 받아 User 조회")
     @ApiResponse(responseCode = "200", description = "id로 User 조회 성공")
     @GetMapping("/{id}")
@@ -43,13 +50,6 @@ public class UserController {
     @GetMapping("/email/{email}")
     public ResponseEntity<UserResponseDto> getUserByEmail(@PathVariable(name = "email") String email) {
         return ResponseEntity.status(OK).body(userService.getUserByEmail(email));
-    }
-
-    @Operation(summary = "모든 User 조회", description = "모든 User 조회")
-    @ApiResponse(responseCode = "200", description = "모든 User 조회 성공")
-    @GetMapping("/all")
-    public ResponseEntity<List<UserResponseDto>> getAllUsers() {
-        return ResponseEntity.status(OK).body(userService.getAllUsers());
     }
 
     @Operation(summary = "User 생성", description = "User 생성")
