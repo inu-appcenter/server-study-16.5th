@@ -27,19 +27,19 @@ public class TaskRequestDto {
     private Long categoryId;
 
     @Schema(description = "우선순위 >> TOP, MIDDLE, BOTTOM")
-    private Priority priority;
+    private String priority;
 
     @Schema(description = "상태 >> PENDING, PROGRESS, COMPLETED")
     @NotBlank
-    private Status status;
+    private String status;
 
     public static Task dtoToEntity(TaskRequestDto requestDto, Category category, User user) {
         return Task.builder()
                 .title(requestDto.title)
                 .description(requestDto.description)
                 .dueDate(requestDto.dueDate)
-                .status(requestDto.status)
-                .priority(requestDto.priority)
+                .status(Status.parsing(requestDto.status))
+                .priority(Priority.parsing(requestDto.priority))
                 .category(category)
                 .createdAt(LocalDateTime.now())
                 .category(category)

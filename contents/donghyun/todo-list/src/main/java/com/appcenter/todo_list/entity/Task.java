@@ -60,8 +60,8 @@ public class Task {
         this.title = taskRequestDto.getTitle();
         this.description = taskRequestDto.getDescription();
         this.dueDate = taskRequestDto.getDueDate();
-        this.priority = taskRequestDto.getPriority();
-        this.status = taskRequestDto.getStatus();
+        this.priority = Priority.parsing(taskRequestDto.getPriority());
+        this.status = Status.parsing(taskRequestDto.getStatus());
         this.updatedAt = LocalDateTime.now();
         this.createdAt = LocalDateTime.now();
 
