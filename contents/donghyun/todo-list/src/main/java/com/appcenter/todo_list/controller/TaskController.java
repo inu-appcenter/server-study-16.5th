@@ -59,7 +59,7 @@ public class TaskController {
 
     @Operation(summary = "Task 수정", description = "Task id를 Path로 받아 Task 수정")
     @ApiResponse(responseCode = "200", description = "Task 수정 성공")
-    @PatchMapping("/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<TaskResponseDto> updateTask(@PathVariable(name = "id") Long id, @RequestBody TaskRequestDto taskRequestDto) {
         return ResponseEntity.status(OK).body(taskService.updateTask(id, taskRequestDto));
     }

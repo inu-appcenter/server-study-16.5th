@@ -61,7 +61,7 @@ public class UserController {
 
     @Operation(summary = "User 수정", description = "User id를 Path로 받아 User 수정")
     @ApiResponse(responseCode = "200", description = "User 수정 성공")
-    @PatchMapping("/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<UserResponseDto> updateUser(@PathVariable Long id, @RequestBody UserRequestDto userRequestDto) {
         return ResponseEntity.status(OK).body(userService.updateUser(id, userRequestDto));
     }

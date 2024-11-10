@@ -46,7 +46,7 @@ public class CategoryController {
 
     @Operation(summary = "Category 수정", description = "Category id를 Path로 받아 Category 수정")
     @ApiResponse(responseCode = "200", description = "Category 수정 성공")
-    @PatchMapping("/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<CategoryResponseDto> updateCategory (@RequestBody CategoryRequestDto requestDto, @PathVariable(name = "id") Long id) {
         return ResponseEntity.status(OK).body(categoryService.updateCategory(id, requestDto));
     }
