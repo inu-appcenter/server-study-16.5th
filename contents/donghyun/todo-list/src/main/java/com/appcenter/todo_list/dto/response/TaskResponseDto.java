@@ -1,11 +1,8 @@
 package com.appcenter.todo_list.dto.response;
 
-import com.appcenter.todo_list.dto.CategoryDto;
-import com.appcenter.todo_list.dto.UserDto;
 import com.appcenter.todo_list.entity.*;
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -47,4 +44,40 @@ public class TaskResponseDto {
                 .build();
     }
 
+    @Getter
+    @Builder(access = AccessLevel.PRIVATE)
+    @Schema(description = "Category DTO")
+    public static class CategoryDto {
+
+        private Long id;
+        private String name;
+        private String description;
+
+        public static CategoryDto entityToDto(Category category) {
+            return CategoryDto.builder()
+                    .id(category.getId())
+                    .name(category.getName())
+                    .description(category.getDescription())
+                    .build();
+        }
+    }
+
+    @Getter
+    @Builder(access = AccessLevel.PRIVATE)
+    @Schema(description = "User DTO")
+    public static class UserDto {
+
+        private Long id;
+        private String email;
+        private String password;
+        private String name;
+        private LocalDateTime createdAt;
+
+        public static UserDto entityToDto(User user) {
+            return UserDto.builder()
+                    .id(user.getId()).email(user.getEmail())
+                    .password(user.getPassword()).name(user.getName()).createdAt(user.getCreateAt())
+                    .build();
+        }
+    }
 }
