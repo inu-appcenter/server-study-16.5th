@@ -22,11 +22,12 @@ public class TaskController {
 
     private final TaskService taskService;
 
-    @Operation(summary = "모든 Task 조회", description = "모든 Task 조회")
-    @ApiResponse(responseCode = "200", description = "모든 Task 조회 성공")
-    @GetMapping()
-    public ResponseEntity<List<TaskResponseDto>> getAllTasks() {
-        return ResponseEntity.status(OK).body(taskService.getAllTasks());
+    @Operation(summary = "Tasks 조회", description = "1. 파라미터로 categoryId, userId를 넣지 않으면 전부조회" +
+            "2. 파라미터로 categoryId만 넣으면 categoryId와 관련된 tasks만 조회" + "3. 파라미터로 userId만 넣으면 userId와 관련된 tasks만 조회" + "4. 둘 다 넣으면 모두 관련된 tasks를 조회")
+    @GetMapping
+    public ResponseEntity<List<TaskResponseDto>> getTasksByCategoryIdAndUserId(
+            @RequestParam(defaultValue = "0", name = "categoryId") Long categoryId, @RequestParam(defaultValue = "0", name = "userId") Long userId) {
+        return ResponseEntity.status(OK).body(taskService.getTasksByCategoryIdAndUserId(categoryId, userId));
     }
 
     @Operation(summary = "Task 조회", description = "Task id를 Path로 받아 Task 조회")
@@ -34,20 +35,6 @@ public class TaskController {
     @GetMapping("/{id}")
     public ResponseEntity<TaskResponseDto> getTaskById(@PathVariable(name = "id") Long id) {
         return ResponseEntity.status(OK).body(taskService.getTaskById(id));
-    }
-
-    @Operation(summary = "Category에 연관된 Task 조회", description = "Category id를 Path로 받아 연관된 Task 조회")
-    @ApiResponse(responseCode = "200", description = "Category에 연관된 Task 조회 성공")
-    @GetMapping("/categories/{id}")
-    public ResponseEntity<List<TaskResponseDto>> getTasksByCategoryId(@PathVariable(name = "id") Long id) {
-        return ResponseEntity.status(OK).body(taskService.getTasksByCategoryId(id));
-    }
-
-    @Operation(summary = "User에 연관된 Task 조회", description = "User id를 Path로 받아 연관된 Task 조회")
-    @ApiResponse(responseCode = "200", description = "User에 연관된 Task 조회 성공")
-    @GetMapping("/users/{id}")
-    public ResponseEntity<List<TaskResponseDto>> getTasksByUserId(@PathVariable(name = "id") Long id) {
-        return ResponseEntity.status(OK).body(taskService.getTasksByUserId(id));
     }
 
     @Operation(summary = "Task 생성", description = "User id를 Path로 받아 Task 생성")

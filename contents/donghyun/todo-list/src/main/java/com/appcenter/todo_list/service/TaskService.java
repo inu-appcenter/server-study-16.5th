@@ -9,6 +9,7 @@ import com.appcenter.todo_list.repository.CategoryRepository;
 import com.appcenter.todo_list.repository.TaskRepository;
 import com.appcenter.todo_list.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,6 +20,7 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 @Transactional
+@Slf4j
 public class TaskService {
 
     private final TaskRepository taskRepository;
@@ -79,5 +81,21 @@ public class TaskService {
         Task task = taskRepository.findById(id).orElseThrow();
 
         taskRepository.delete(task);
+    }
+
+    public List<TaskResponseDto> getTasksByCategoryIdAndUserId(Long categoryId, Long userId) {
+        log.info("{}, {}", categoryId, userId);
+
+        if (categoryId == 0 && userId == 0) {
+            log.info("all");
+            return getAllTasks();
+        } else if (categoryId == 0) {
+            return getTasksByUserId(userId);
+        } else if (userId == 0) {
+            return getTasksByCategoryId(categoryId);
+        }
+
+        List<Task> task = taskRepository.findByCategoryIdAndUserId(categoryId, userId);
+        return task.stream().map(TaskResponseDto::entityToDto).collect(Collectors.toList());
     }
 }
