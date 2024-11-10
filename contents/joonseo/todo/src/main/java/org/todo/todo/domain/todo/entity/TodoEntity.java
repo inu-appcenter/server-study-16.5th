@@ -55,9 +55,6 @@ public class TodoEntity extends BaseEntity {
     }
 
     public void updateCompleted(){
-        if(completed)
-            this.completed = false;
-
-        this.completed = true;
+        this.completed = !this.completed;
     }
 }

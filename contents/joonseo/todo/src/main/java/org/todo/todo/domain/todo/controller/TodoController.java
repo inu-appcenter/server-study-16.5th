@@ -75,8 +75,8 @@ public class TodoController {
             @ApiResponse(responseCode = "200", description = "투두 가져오기 성공"),
             @ApiResponse(responseCode = "401", description = "투두 가져오기 실패 : 권한 없음")
     })
-    @GetMapping("/{userId}")
-    public ResponseEntity<ResponseDto<List<TodoResponseDto>>> getAllTodo(@PathVariable Long userId){
+    @GetMapping
+    public ResponseEntity<ResponseDto<List<TodoResponseDto>>> getAllTodo(@RequestParam Long userId){
         return ResponseEntity.status(HttpStatus.OK).body(ResponseDto.of(todoService.getAllTodo(userId), "모든 투두 조회"));
     }
 
@@ -85,8 +85,8 @@ public class TodoController {
             @ApiResponse(responseCode = "200", description = "일별 투두 가져오기 성공"),
             @ApiResponse(responseCode = "401", description = "일별 투두 가져오기 실패 : 권한 없음")
     })
-    @GetMapping("/{userId}/date")
-    public ResponseEntity<ResponseDto<List<TodoResponseDto>>> getDayTodo(@Valid@RequestBody DayTodoRequestDto request){
+    @GetMapping("/date")
+    public ResponseEntity<ResponseDto<List<TodoResponseDto>>> getDayTodo(@RequestParam Long userId, @Valid @RequestBody DayTodoRequestDto request){
         return ResponseEntity.status(HttpStatus.OK).body(ResponseDto.of(todoService.getDayTodo(request), request.getCreatedAt().toString() + "의 투두 조회"));
     }
 }
