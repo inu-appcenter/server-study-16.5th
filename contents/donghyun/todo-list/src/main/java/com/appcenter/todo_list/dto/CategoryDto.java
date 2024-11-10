@@ -2,11 +2,12 @@ package com.appcenter.todo_list.dto;
 
 import com.appcenter.todo_list.entity.Category;
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 
 @Getter
-@Builder
+@Builder(access = AccessLevel.PRIVATE)
 @Schema(description = "Category DTO")
 public class CategoryDto {
 
