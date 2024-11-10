@@ -53,7 +53,6 @@ public class UserService {
         User user = UserRequestDto.dtoToEntity(userRequestDto);
 
         User savedUser = userRepository.save(user);
-        log.info(savedUser.toString());
         return UserResponseDto.entityToDto(savedUser);
     }
 
