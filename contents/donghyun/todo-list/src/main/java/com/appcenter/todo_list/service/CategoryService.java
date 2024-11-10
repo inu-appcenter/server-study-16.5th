@@ -32,7 +32,7 @@ public class CategoryService {
     public List<CategoryResponseDto> getAllCategories() {
         List<Category> categories = categoryRepository.findAll();
 
-        return categories.stream().map(category -> CategoryResponseDto.entityToDto(category)).collect(Collectors.toList());
+        return categories.stream().map(CategoryResponseDto::entityToDto).collect(Collectors.toList());
     }
 
     public CategoryResponseDto createCategory(CategoryRequestDto categoryRequestDto, Long userId) {
