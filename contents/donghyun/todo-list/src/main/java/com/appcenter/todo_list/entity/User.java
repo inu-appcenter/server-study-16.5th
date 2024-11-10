@@ -23,7 +23,7 @@ public class User {
     @Column(nullable = false, length = 30)
     private String password;
 
-    @Column(nullable = false, length = 10)
+    @Column(nullable = false, length = 10, unique = true)
     private String name;
 
     private LocalDateTime createAt;
