@@ -8,6 +8,8 @@ import org.todo.todo.domain.todo.repository.TodoRepository;
 import org.todo.todo.domain.user.entity.UserEntity;
 import org.todo.todo.domain.user.repository.UserRepository;
 import org.todo.todo.domain.todo.dto.res.TodoResponseDto;
+import org.todo.todo.global.error.code.CustomErrorCode;
+import org.todo.todo.global.error.exception.RestApiException;
 
 import java.util.List;
 import java.util.Objects;
@@ -34,10 +36,8 @@ public class TodoService {
     }
 
     public Boolean deleteTodo(Long userId, TodoDeleteRequestDto todoDeleteRequestDto){
-        // 삭제하려는 유저와 투두 작성자 일치 여부 확인
-        // TODO 에러핸들링 추가
-        TodoEntity todo = todoRepository.findById(todoDeleteRequestDto.getTodoId())
-                .orElseThrow(null);
+
+        TodoEntity todo = findTodo(todoDeleteRequestDto.getTodoId());
 
         if(checkAuthorization(todo, userId)) {
             todoRepository.delete(todo);
@@ -47,24 +47,21 @@ public class TodoService {
         return false;
     }
 
-    public Boolean updateTodo(Long userId, TodoUpdateRequestDto todoUpdateRequestDto){
-        // 수정하려는 유저와 투두 작성자 일치 여부 확인
-        // TODO 에러핸들링 추가
-        TodoEntity todo = todoRepository.findByTitle(todoUpdateRequestDto.getTitle())
-                .orElseThrow(null);
+    public Long updateTodo(Long userId, TodoUpdateRequestDto todoUpdateRequestDto){
+
+        TodoEntity todo = findTodo(todoUpdateRequestDto.getTodoId());
 
         if(checkAuthorization(todo, userId)){
             todo.updateTodo(todoUpdateRequestDto.getTitle(), todoUpdateRequestDto.getDescription(), todoUpdateRequestDto.getDueDate(), todoUpdateRequestDto.getPriority());
-            return true;
+            return todo.getId();
         }
 
-        return false;
+        return -1L;
     }
 
     public Boolean updateCompletedTodo(Long userId, TodoCompletedRequestDto todoCompletedRequestDto){
-        // TODO 에러핸들링 추가
-        TodoEntity todo = todoRepository.findById(todoCompletedRequestDto.getTodoId())
-                .orElseThrow(null);
+
+        TodoEntity todo = findTodo(todoCompletedRequestDto.getTodoId());
 
         if(checkAuthorization(todo, userId)) {
             todo.updateCompleted();
@@ -75,23 +72,25 @@ public class TodoService {
     }
 
     public List<TodoResponseDto> getAllTodo(Long userId){
-       // TODO 배열이 비어있는 경우 처리
        return todoRepository.findAllByUserId(userId).stream()
                .map(TodoResponseDto::from)
                .collect(Collectors.toList());
     }
 
     public List<TodoResponseDto> getDayTodo(Long userId, DayTodoRequestDto dayTodoRequestDto){
-        // TODO 배열이 비어있는 경우 처리
         return todoRepository.findAllByCreatedAtAndUserId(dayTodoRequestDto.getRequestDate(),userId).stream()
                 .map(TodoResponseDto::from)
                 .collect(Collectors.toList());
     }
 
     public UserEntity findUser(Long userId){
-        // TODO 에러핸들링 추가
         return userRepository.findById(userId)
-                .orElseThrow(null);
+                .orElseThrow(() -> new RestApiException(CustomErrorCode.PERMISSION_DENIED));
+    }
+
+    public TodoEntity findTodo(Long todoId) {
+        return todoRepository.findById(todoId)
+                .orElseThrow(() -> new RestApiException(CustomErrorCode.TODO_NOT_FOUND));
     }
 
     public Boolean checkAuthorization(TodoEntity todo, Long userId){

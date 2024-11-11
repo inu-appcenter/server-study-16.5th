@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @Getter
 @NoArgsConstructor
 public class DayTodoRequestDto {
-
+    // TODO DateTimeFormat 에러 핸들링 추가(Custom Validator)
     @DateTimeFormat(pattern = "yyyyMMdd")
     private LocalDateTime requestDate;
 }

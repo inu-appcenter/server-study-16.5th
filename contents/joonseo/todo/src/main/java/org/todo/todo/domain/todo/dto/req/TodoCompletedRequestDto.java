@@ -10,6 +10,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class TodoCompletedRequestDto {
     @Schema(description = "투두 아이디", example = "1")
-    @NotBlank
+    @NotBlank(message = "투두 ID가 포함되지 않았습니다.")
     private Long todoId;
 }
