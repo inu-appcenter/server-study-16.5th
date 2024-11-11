@@ -10,10 +10,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "todo")
 public class TodoEntity extends BaseEntity {
 
@@ -39,4 +36,25 @@ public class TodoEntity extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private UserEntity user;
+
+    @Builder
+    public TodoEntity(String title, String description, LocalDateTime dueDate, Integer priority, UserEntity user) {
+        this.title = title;
+        this.description = description;
+        this.dueDate = dueDate;
+        this.priority = priority;
+        this.user = user;
+    }
+    // Q. 외래키 유저 아이디를 빌더 패턴에 포함시키는게 적절한가?
+
+    public void updateTodo(String title, String description, LocalDateTime dueDate, Integer priority){
+        this.title = title;
+        this.description = description;
+        this.dueDate = dueDate;
+        this.priority = priority;
+    }
+
+    public void updateCompleted(){
+        this.completed = !this.completed;
+    }
 }
