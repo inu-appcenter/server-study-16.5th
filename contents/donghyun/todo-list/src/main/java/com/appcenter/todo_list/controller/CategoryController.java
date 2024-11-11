@@ -7,6 +7,7 @@ import com.appcenter.todo_list.service.CategoryService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -40,14 +41,14 @@ public class CategoryController {
     @Operation(summary = "Category 생성", description = "User id를 Path로 받아 Category 생성")
     @ApiResponse(responseCode = "201", description = "Category 생성 성공")
     @PostMapping("/users/{userId}")
-    public ResponseEntity<CategoryResponseDto> createCategory(@RequestBody CategoryRequestDto requestDto, @PathVariable(name = "userId") Long userId) {
+    public ResponseEntity<CategoryResponseDto> createCategory(@Valid @RequestBody CategoryRequestDto requestDto, @PathVariable(name = "userId") Long userId) {
         return ResponseEntity.status(CREATED).body(categoryService.createCategory(requestDto, userId));
     }
 
     @Operation(summary = "Category 수정", description = "Category id를 Path로 받아 Category 수정")
     @ApiResponse(responseCode = "200", description = "Category 수정 성공")
     @PutMapping("/{id}")
-    public ResponseEntity<CategoryResponseDto> updateCategory (@RequestBody CategoryRequestDto requestDto, @PathVariable(name = "id") Long id) {
+    public ResponseEntity<CategoryResponseDto> updateCategory (@Valid @RequestBody CategoryRequestDto requestDto, @PathVariable(name = "id") Long id) {
         return ResponseEntity.status(OK).body(categoryService.updateCategory(id, requestDto));
     }
 

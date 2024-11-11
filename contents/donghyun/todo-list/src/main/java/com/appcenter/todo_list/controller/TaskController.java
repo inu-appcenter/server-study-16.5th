@@ -6,6 +6,7 @@ import com.appcenter.todo_list.service.TaskService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -40,14 +41,14 @@ public class TaskController {
     @Operation(summary = "Task 생성", description = "User id를 Path로 받아 Task 생성")
     @ApiResponse(responseCode = "201", description = "Task 생성 성공")
     @PostMapping("/users/{userId}")
-    public ResponseEntity<TaskResponseDto> createTask(@RequestBody TaskRequestDto taskRequestDto, @PathVariable(name = "userId") Long userId) {
+    public ResponseEntity<TaskResponseDto> createTask(@Valid @RequestBody TaskRequestDto taskRequestDto, @PathVariable(name = "userId") Long userId) {
         return ResponseEntity.status(OK).body(taskService.createTask(userId, taskRequestDto));
     }
 
     @Operation(summary = "Task 수정", description = "Task id를 Path로 받아 Task 수정")
     @ApiResponse(responseCode = "200", description = "Task 수정 성공")
     @PutMapping("/{id}")
-    public ResponseEntity<TaskResponseDto> updateTask(@PathVariable(name = "id") Long id, @RequestBody TaskRequestDto taskRequestDto) {
+    public ResponseEntity<TaskResponseDto> updateTask(@Valid @RequestBody TaskRequestDto taskRequestDto, @PathVariable(name = "id") Long id) {
         return ResponseEntity.status(OK).body(taskService.updateTask(id, taskRequestDto));
     }
 

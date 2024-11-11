@@ -6,8 +6,8 @@ import com.appcenter.todo_list.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -55,14 +55,14 @@ public class UserController {
     @Operation(summary = "User 생성", description = "User 생성")
     @ApiResponse(responseCode = "201", description = "User 생성 성공")
     @PostMapping
-    public ResponseEntity<UserResponseDto> createUser(@RequestBody UserRequestDto userRequestDto) {
+    public ResponseEntity<UserResponseDto> createUser(@Valid @RequestBody UserRequestDto userRequestDto) {
         return ResponseEntity.status(OK).body(userService.createUser(userRequestDto));
     }
 
     @Operation(summary = "User 수정", description = "User id를 Path로 받아 User 수정")
     @ApiResponse(responseCode = "200", description = "User 수정 성공")
     @PutMapping("/{id}")
-    public ResponseEntity<UserResponseDto> updateUser(@PathVariable Long id, @RequestBody UserRequestDto userRequestDto) {
+    public ResponseEntity<UserResponseDto> updateUser(@Valid @RequestBody UserRequestDto userRequestDto, @PathVariable Long id) {
         return ResponseEntity.status(OK).body(userService.updateUser(id, userRequestDto));
     }
 
