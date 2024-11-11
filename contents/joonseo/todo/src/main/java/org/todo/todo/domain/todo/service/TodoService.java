@@ -19,8 +19,8 @@ public class TodoService {
     private final TodoRepository todoRepository;
     private final UserRepository userRepository;
 
-    public Long saveTodo(TodoDto todoDto){
-        UserEntity user = findUser(todoDto.getUserId());
+    public Long saveTodo(Long userId, TodoDto todoDto){
+        UserEntity user = findUser(userId);
 
         TodoEntity todo = TodoEntity.builder()
                 .title(todoDto.getTitle())
@@ -33,13 +33,13 @@ public class TodoService {
         return todoRepository.save(todo).getId();
     }
 
-    public Boolean deleteTodo(TodoDeleteRequestDto todoDeleteRequestDto){
+    public Boolean deleteTodo(Long userId, TodoDeleteRequestDto todoDeleteRequestDto){
         // 삭제하려는 유저와 투두 작성자 일치 여부 확인
         // TODO 에러핸들링 추가
-        TodoEntity todo = todoRepository.findByTitle(todoDeleteRequestDto.getTitle())
+        TodoEntity todo = todoRepository.findById(todoDeleteRequestDto.getTodoId())
                 .orElseThrow(null);
 
-        if(checkAuthorization(todo, todoDeleteRequestDto.getUserId())) {
+        if(checkAuthorization(todo, userId)) {
             todoRepository.delete(todo);
             return true;
         }
@@ -47,13 +47,13 @@ public class TodoService {
         return false;
     }
 
-    public Boolean updateTodo(TodoUpdateRequestDto todoUpdateRequestDto){
+    public Boolean updateTodo(Long userId, TodoUpdateRequestDto todoUpdateRequestDto){
         // 수정하려는 유저와 투두 작성자 일치 여부 확인
         // TODO 에러핸들링 추가
         TodoEntity todo = todoRepository.findByTitle(todoUpdateRequestDto.getTitle())
                 .orElseThrow(null);
 
-        if(checkAuthorization(todo, todoUpdateRequestDto.getUserId())){
+        if(checkAuthorization(todo, userId)){
             todo.updateTodo(todoUpdateRequestDto.getTitle(), todoUpdateRequestDto.getDescription(), todoUpdateRequestDto.getDueDate(), todoUpdateRequestDto.getPriority());
             return true;
         }
@@ -61,12 +61,12 @@ public class TodoService {
         return false;
     }
 
-    public Boolean updateCompletedTodo(TodoCompletedRequestDto todoCompletedRequestDto){
+    public Boolean updateCompletedTodo(Long userId, TodoCompletedRequestDto todoCompletedRequestDto){
         // TODO 에러핸들링 추가
-        TodoEntity todo = todoRepository.findByTitle(todoCompletedRequestDto.getTitle())
+        TodoEntity todo = todoRepository.findById(todoCompletedRequestDto.getTodoId())
                 .orElseThrow(null);
 
-        if(checkAuthorization(todo, todoCompletedRequestDto.getUserId())) {
+        if(checkAuthorization(todo, userId)) {
             todo.updateCompleted();
             return true;
         }
@@ -81,9 +81,9 @@ public class TodoService {
                .collect(Collectors.toList());
     }
 
-    public List<TodoResponseDto> getDayTodo(DayTodoRequestDto dayTodoRequestDto){
+    public List<TodoResponseDto> getDayTodo(Long userId, DayTodoRequestDto dayTodoRequestDto){
         // TODO 배열이 비어있는 경우 처리
-        return todoRepository.findAllByCreatedAtAndUserId(dayTodoRequestDto.getCreatedAt(), dayTodoRequestDto.getUserId()).stream()
+        return todoRepository.findAllByCreatedAtAndUserId(dayTodoRequestDto.getRequestDate(),userId).stream()
                 .map(TodoResponseDto::from)
                 .collect(Collectors.toList());
     }

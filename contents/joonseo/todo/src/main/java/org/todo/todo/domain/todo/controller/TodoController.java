@@ -32,8 +32,9 @@ public class TodoController {
         @ApiResponse(responseCode = "400", description = "투두 생성 실패")
     })
     @PostMapping
-    public ResponseEntity<ResponseDto<Long>> saveTodo(@Valid@RequestBody TodoDto request){
-        Long todoId = todoService.saveTodo(request);
+    public ResponseEntity<ResponseDto<Long>> saveTodo(@RequestParam Long userId,
+                                                      @Valid@RequestBody TodoDto request){
+        Long todoId = todoService.saveTodo(userId, request);
         return ResponseEntity.status(HttpStatus.CREATED).body(ResponseDto.of(todoId, "투두 생성 성공"));
     }
 
@@ -43,9 +44,10 @@ public class TodoController {
             @ApiResponse(responseCode = "401", description = "투두 삭제 실패 : 권한 없음")
     })
     @DeleteMapping
-    public ResponseEntity<ResponseDto<Boolean>> deleteTodo(@Valid @RequestBody TodoDeleteRequestDto request){
-        Boolean isSucceed = todoService.deleteTodo(request);
-        return ResponseEntity.status(HttpStatus.OK).body(ResponseDto.of(isSucceed, request.getTitle()));
+    public ResponseEntity<ResponseDto<Boolean>> deleteTodo(@RequestParam Long userId,
+                                                           @Valid @RequestBody TodoDeleteRequestDto request){
+        Boolean isSucceed = todoService.deleteTodo(userId, request);
+        return ResponseEntity.status(HttpStatus.OK).body(ResponseDto.of(isSucceed, request.getTodoId().toString()));
     }
 
     @Operation(summary = "투두 전체 수정하기")
@@ -54,8 +56,9 @@ public class TodoController {
             @ApiResponse(responseCode = "401", description = "투두 수정 실패 : 권한 없음")
     })
     @PutMapping
-    public ResponseEntity<ResponseDto<Boolean>> updateTodo(@Valid@RequestBody TodoUpdateRequestDto request){
-        Boolean isSucceed = todoService.updateTodo(request);
+    public ResponseEntity<ResponseDto<Boolean>> updateTodo(@RequestParam Long userId,
+                                                           @Valid@RequestBody TodoUpdateRequestDto request){
+        Boolean isSucceed = todoService.updateTodo(userId, request);
         return ResponseEntity.status(HttpStatus.OK).body(ResponseDto.of(isSucceed, request.getTitle()));
     }
 
@@ -65,8 +68,9 @@ public class TodoController {
             @ApiResponse(responseCode = "401", description = "투두 완료여부 수정 실패 : 권한 없음")
     })
     @PutMapping("/complete")
-    public ResponseEntity<ResponseDto<Boolean>> updateCompletedTodo(@Valid@RequestBody TodoCompletedRequestDto request){
-        Boolean isSucceed = todoService.updateCompletedTodo(request);
+    public ResponseEntity<ResponseDto<Boolean>> updateCompletedTodo(@RequestParam Long userId,
+                                                                    @Valid@RequestBody TodoCompletedRequestDto request){
+        Boolean isSucceed = todoService.updateCompletedTodo(userId, request);
         return ResponseEntity.status(HttpStatus.OK).body(ResponseDto.of(isSucceed, request.getTitle()));
     }
 
@@ -86,7 +90,8 @@ public class TodoController {
             @ApiResponse(responseCode = "401", description = "일별 투두 가져오기 실패 : 권한 없음")
     })
     @GetMapping("/date")
-    public ResponseEntity<ResponseDto<List<TodoResponseDto>>> getDayTodo(@RequestParam Long userId, @Valid @RequestBody DayTodoRequestDto request){
-        return ResponseEntity.status(HttpStatus.OK).body(ResponseDto.of(todoService.getDayTodo(request), request.getCreatedAt().toString() + "의 투두 조회"));
+    public ResponseEntity<ResponseDto<List<TodoResponseDto>>> getDayTodo(@RequestParam Long userId,
+                                                                         @Valid @RequestBody DayTodoRequestDto request){
+        return ResponseEntity.status(HttpStatus.OK).body(ResponseDto.of(todoService.getDayTodo(userId, request), request.getRequestDate().toString() + "의 투두 조회"));
     }
 }

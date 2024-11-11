@@ -10,15 +10,10 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
-@Schema(description = "투두 삭제 req dto")
+@Schema(description = "투두 수정 req dto")
 @Getter
 @NoArgsConstructor
 public class TodoUpdateRequestDto {
-
-    @Schema(description = "삭제를 요청한 유저 아이디", example = "1")
-    @NotBlank
-    private Long userId;
-
     @NotBlank
     private String title;
 
