@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @Schema(description = "Category 요청 DTO")
 public class CategoryRequestDto {
 
-    @NotBlank
+    @NotBlank(message = "카테고리명을 작성해주세요.")
     private String name;
     private String description;
 

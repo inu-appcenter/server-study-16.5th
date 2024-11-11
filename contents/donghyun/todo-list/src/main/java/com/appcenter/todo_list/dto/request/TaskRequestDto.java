@@ -15,22 +15,22 @@ import java.time.LocalDateTime;
 @Schema(description = "Task 요청 DTO")
 public class TaskRequestDto {
 
-    @NotBlank
+    @NotBlank(message = "제목을 작성해주세요")
     private String title;
 
     private String description;
 
-    @NotNull
+    @NotNull(message = "목표기간을 설정하세요")
     private LocalDateTime dueDate;
 
-    @NotBlank
+    @NotNull(message = "카테고리를 선택하세요")
     private Long categoryId;
 
     @Schema(description = "우선순위 >> TOP, MIDDLE, BOTTOM")
     private String priority;
 
     @Schema(description = "상태 >> PENDING, PROGRESS, COMPLETED")
-    @NotBlank
+    @NotBlank(message = "현재 상태를 선택하세요")
     private String status;
 
     public static Task dtoToEntity(TaskRequestDto requestDto, Category category, User user) {
