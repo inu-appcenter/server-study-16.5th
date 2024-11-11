@@ -4,6 +4,8 @@ import com.appcenter.todo_list.dto.request.CategoryRequestDto;
 import com.appcenter.todo_list.dto.response.CategoryResponseDto;
 import com.appcenter.todo_list.entity.Category;
 import com.appcenter.todo_list.entity.User;
+import com.appcenter.todo_list.exception.CustomException;
+import com.appcenter.todo_list.exception.ErrorCode;
 import com.appcenter.todo_list.repository.CategoryRepository;
 import com.appcenter.todo_list.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +25,7 @@ public class CategoryService {
 
     @Transactional(readOnly = true)
     public CategoryResponseDto getCategoryById(Long id) {
-        Category category = categoryRepository.findById(id).orElseThrow();
+        Category category = categoryRepository.findById(id).orElseThrow(() -> new CustomException(ErrorCode.CATEGORY_NOT_FOUND));
 
         return CategoryResponseDto.entityToDto(category);
     }
@@ -36,7 +38,12 @@ public class CategoryService {
     }
 
     public CategoryResponseDto createCategory(CategoryRequestDto categoryRequestDto, Long userId) {
-        User user = userRepository.findById(userId).orElseThrow();
+        User user = userRepository.findById(userId).orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
+
+        if (exitsCategoryByName(categoryRequestDto.getName())) {
+            throw new CustomException(ErrorCode.DUPLICATE_CATEGORY);
+        }
+
         Category category = CategoryRequestDto.dtoToEntity(categoryRequestDto, user);
 
         Category savedCategory = categoryRepository.save(category);
@@ -45,7 +52,7 @@ public class CategoryService {
     }
 
     public CategoryResponseDto updateCategory(Long id, CategoryRequestDto categoryRequestDto) {
-        Category findCategory = categoryRepository.findById(id).orElseThrow();
+        Category findCategory = categoryRepository.findById(id).orElseThrow(() -> new CustomException(ErrorCode.CATEGORY_NOT_FOUND));
 
         Category updatedCategory = findCategory.update(categoryRequestDto);
 
@@ -53,8 +60,12 @@ public class CategoryService {
     }
 
     public void deleteCategory(Long id) {
-        Category findCategory = categoryRepository.findById(id).orElseThrow();
+        Category findCategory = categoryRepository.findById(id).orElseThrow(() -> new CustomException(ErrorCode.CATEGORY_NOT_FOUND));
 
         categoryRepository.delete(findCategory);
+    }
+
+    private Boolean exitsCategoryByName(String name) {
+        return categoryRepository.existsByName(name);
     }
 }
