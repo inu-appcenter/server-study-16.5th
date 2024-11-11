@@ -1,15 +1,12 @@
 package com.appcenter.todo_list.entity;
 
 import com.appcenter.todo_list.dto.request.CategoryRequestDto;
-import com.appcenter.todo_list.dto.response.CategoryResponseDto;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.List;
 
 @Entity
 @Getter
-@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Category {
 
@@ -33,18 +30,10 @@ public class Category {
         this.user = user;
     }
 
-    public Category(CategoryRequestDto categoryRequestDto, User user) {
-        this.name = categoryRequestDto.getName();
-        this.description = categoryRequestDto.getDescription();
-        this.user = user;
-    }
-
     public Category update(CategoryRequestDto categoryRequestDto) {
         this.name = categoryRequestDto.getName();
         this.description = categoryRequestDto.getDescription();
 
         return this;
     }
-
-
 }

@@ -9,7 +9,6 @@ import java.util.List;
 
 @Entity
 @Getter
-@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class User {
 
@@ -23,10 +22,16 @@ public class User {
     @Column(nullable = false, length = 30)
     private String password;
 
-    @Column(nullable = false, length = 10, unique = true)
+    @Column(nullable = false, length = 10)
     private String name;
 
     private LocalDateTime createAt;
+
+    @OneToMany(mappedBy = "user", orphanRemoval = true)
+    private List<Task> tasks;
+
+    @OneToMany(mappedBy = "user", orphanRemoval = true)
+    private List<Category> Categories;
 
     @Builder
     public User(String email, String password, String name, LocalDateTime createAt) {
@@ -35,12 +40,6 @@ public class User {
         this.name = name;
         this.createAt = createAt;
     }
-
-    @OneToMany(mappedBy = "user", orphanRemoval = true)
-    private List<Task> tasks;
-
-    @OneToMany(mappedBy = "user", orphanRemoval = true)
-    private List<Category> Categories;
 
     public User update(UserRequestDto userRequestDto) {
         this.name = userRequestDto.getName();
