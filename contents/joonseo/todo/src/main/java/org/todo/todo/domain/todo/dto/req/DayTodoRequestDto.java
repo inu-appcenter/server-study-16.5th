@@ -13,11 +13,7 @@ import java.time.LocalDateTime;
 @Getter
 @NoArgsConstructor
 public class DayTodoRequestDto {
-
-    @Schema(description = "투두 조회를 요청한 유저 아이디", example = "1")
-    @NotBlank
-    private Long userId;
-
+    // TODO DateTimeFormat 에러 핸들링 추가(Custom Validator)
     @DateTimeFormat(pattern = "yyyyMMdd")
-    private LocalDateTime createdAt;
+    private LocalDateTime requestDate;
 }
