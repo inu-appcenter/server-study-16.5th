@@ -1,17 +1,22 @@
 package com.appcenter.todo_list.service;
 
+import com.appcenter.todo_list.dto.request.LoginRequest;
 import com.appcenter.todo_list.dto.request.UserRequestDto;
 import com.appcenter.todo_list.dto.response.UserResponseDto;
 import com.appcenter.todo_list.entity.User;
 import com.appcenter.todo_list.exception.CustomException;
 import com.appcenter.todo_list.exception.ErrorCode;
+import com.appcenter.todo_list.jwt.JwtTokenProvider;
 import com.appcenter.todo_list.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.ErrorResponseException;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -21,6 +26,37 @@ import java.util.stream.Collectors;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final JwtTokenProvider jwtTokenProvider;
+    private final PasswordEncoder passwordEncoder;
+
+    public UserResponseDto register(UserRequestDto request) {
+        Optional<User> existingUser = userRepository.findByEmail(request.getEmail());
+        if (existingUser.isPresent()) {
+            throw new CustomException(ErrorCode.DUPLICATE_USER);
+        }
+
+        User user = new User(request);
+        user.updatePassword(passwordEncoder.encode(request.getPassword()));
+
+        userRepository.save(user);
+
+        UserResponseDto userResponseDto = UserResponseDto.entityToDto(user);
+
+        return userResponseDto;
+    }
+
+    // 로그인
+    public String login(LoginRequest request) {
+        User user = userRepository.findByEmail(request.getEmail())
+                .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
+
+        if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
+            throw new CustomException(ErrorCode.NOT_EXITS_PASSWORD);
+        }
+
+        return jwtTokenProvider.createToken(user.getEmail(), String.valueOf(user.getRole()));
+    }
+
 
     @Transactional(readOnly = true)
     public UserResponseDto getUserById(Long id) {

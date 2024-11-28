@@ -84,10 +84,12 @@ public class TaskService {
         taskRepository.delete(task);
     }
 
-    public List<TaskResponseDto> getTasksByCategoryIdAndUserId(Long categoryId, Long userId) {
 
-        if (categoryId == 0 && userId == 0) {
+    public List<TaskResponseDto> getTask(Long categoryId, Long userId, Long taskId) {
+        if (categoryId == 0 && userId == 0 && taskId == 0) {
             return getAllTasks();
+        } else if (categoryId == 0 && userId == 0 && taskId > 0) {
+            return getTasksByCategoryId(taskId);
         } else if (categoryId == 0) {
             return getTasksByUserId(userId);
         } else if (userId == 0) {
