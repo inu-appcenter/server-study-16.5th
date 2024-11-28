@@ -14,6 +14,9 @@ public enum CustomErrorCode implements ErrorCode{
     // user error
     USER_NOT_FOUND(HttpStatus.NOT_FOUND, 404, "User not found"),
     PERMISSION_DENIED(HttpStatus.FORBIDDEN, 403, "Permission denied"),
+
+    // jwt
+    JWT_NOT_VALID(HttpStatus.UNAUTHORIZED, 401, "Jwt is not Valid"),
     // validation
     INVALID_PARAMS(HttpStatus.BAD_REQUEST, 400, "Validation Failed")
     ;

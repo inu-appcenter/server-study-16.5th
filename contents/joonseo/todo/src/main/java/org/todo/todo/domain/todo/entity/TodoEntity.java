@@ -45,7 +45,6 @@ public class TodoEntity extends BaseEntity {
         this.priority = priority;
         this.user = user;
     }
-    // Q. 외래키 유저 아이디를 빌더 패턴에 포함시키는게 적절한가?
 
     public void updateTodo(String title, String description, LocalDateTime dueDate, Integer priority){
         this.title = title;
