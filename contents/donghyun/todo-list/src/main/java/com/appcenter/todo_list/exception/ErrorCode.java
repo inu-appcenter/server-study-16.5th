@@ -9,6 +9,8 @@ public enum ErrorCode {
     // User Errors
     USER_NOT_FOUND(404, "U001", "해당 User를 찾을 수 없습니다."),
     DUPLICATE_USER(409, "U002", "해당 User가 이미 존재합니다."),
+    NOT_EXITS_PASSWORD(404, "U003", "비밀번호가 존재하지 않습니다."),
+
 
     // Task Errors
     TASK_NOT_FOUND(404, "T001", "해당 Task를 찾을 수 없습니다."),
