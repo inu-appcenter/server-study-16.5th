@@ -34,7 +34,7 @@ public class UserRequestDto {
                 .email(requestDto.email)
                 .password(requestDto.password)
                 .name(requestDto.name)
-                .createAt(LocalDateTime.now())
+
                 .build();
     }
 }
